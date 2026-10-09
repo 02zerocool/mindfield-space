@@ -1,0 +1,38 @@
+# Your mind — never commit these
+lancedb/
+lancedb_*/
+ingest/ingest_queue/*
+ingest/ingest_done/*
+!ingest/ingest_queue/.gitkeep
+!ingest/ingest_queue/README.md
+
+# Models — large binaries
+models/
+*.gguf
+*.onnx
+
+# Secrets
+.env
+accounts.json
+*.credentials.json
+*.session
+
+# Python
+__pycache__/
+*.pyc
+*.pyo
+venv/
+.venv/
+*.egg-info/
+
+# Logs
+logs/
+*.log
+
+# Bifrost sessions
+bifrost/sessions/
+
+# OS
+.DS_Store
+Thumbs.db
+desktop.ini

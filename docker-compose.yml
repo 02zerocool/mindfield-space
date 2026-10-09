@@ -1,0 +1,97 @@
+version: "3.9"
+
+# Mindfield — core stack
+#
+# Services:
+#   nomic-embed   nomic-embed-text-v1.5 GGUF via llama-server  :8082
+#   lean          memory access layer (LanceDB + search/write)  :8018
+#   voyager       web frontend + agent backend                  :8008
+#
+# Optional (uncomment to enable):
+#   gguf          local GGUF inference (seven_v3_q4 or any GGUF) :8009
+#   bifrost       multi-path inference bridge                   :8200
+#
+# GPU:
+#   Set GGUF_GPU_LAYERS to number of layers to offload (0 = CPU only)
+#   Requires: docker with --gpus all or NVIDIA Container Toolkit
+
+services:
+
+  # ── Embedding server ─────────────────────────────────────────────────────────
+  # Model must be manually downloaded first — see setup.py for instructions
+  nomic-embed:
+    image: ghcr.io/ggerganov/llama.cpp:server
+    ports:
+      - "127.0.0.1:${EMBED_PORT:-8082}:${EMBED_PORT:-8082}"
+    volumes:
+      - ./models:/models
+    command: >
+      --model /models/nomic-embed-text-v1.5.Q8_0.gguf
+      --port 8082
+      --host 0.0.0.0
+      --embedding
+      --ctx-size 2048
+      --n-gpu-layers ${EMBED_GPU_LAYERS:-0}
+    restart: unless-stopped
+
+  # ── Lean memory API ───────────────────────────────────────────────────────────
+  lean:
+    build:
+      context: .
+      dockerfile: lean/Dockerfile
+    ports:
+      - "127.0.0.1:${LEAN_PORT:-8018}:${LEAN_PORT:-8018}"
+    volumes:
+      - ./lancedb:/app/lancedb
+      - ./lean:/app/lean
+    environment:
+      LANCE_DB_PATH: /app/lancedb
+      LEAN_PORT:     "${LEAN_PORT:-8018}"
+      EMBED_URL:     "http://nomic-embed:${EMBED_PORT:-8082}"
+    depends_on:
+      - nomic-embed
+    restart: unless-stopped
+
+  # ── Voyager web frontend ─────────────────────────────────────────────────────
+  # NOT included in this release. The lean API at :8018 is the complete
+  # deliverable for v0.1. A web frontend will be added in a future release.
+  # See: https://github.com/yourname/mindfield/issues (track progress there)
+  #
+  # voyager:
+  #   build:
+  #     context: ./voyager
+  #     dockerfile: Dockerfile
+  #   ports:
+  #     - "127.0.0.1:8008:8008"
+
+  # ── GGUF inference (optional — uncomment to enable) ──────────────────────────
+  # gguf:
+  #   image: ghcr.io/ggerganov/llama.cpp:server
+  #   ports:
+  #     - "127.0.0.1:8009:8009"
+  #   volumes:
+  #     - ./models:/models
+  #   command: >
+  #     --model /models/your-model.gguf
+  #     --port 8009
+  #     --host 0.0.0.0
+  #     --ctx-size 16384
+  #     --n-gpu-layers ${GGUF_GPU_LAYERS:-0}
+  #   restart: unless-stopped
+
+  # ── Bifrost bridge (optional — uncomment to enable) ──────────────────────────
+  # bifrost:
+  #   build:
+  #     context: ./bifrost
+  #     dockerfile: Dockerfile
+  #   ports:
+  #     - "127.0.0.1:8200:8200"
+  #   environment:
+  #     VOYAGER_URL: http://voyager:8008
+  #     LEAN_URL:    http://lean:8018
+  #   depends_on:
+  #     - voyager
+  #   restart: unless-stopped
+
+volumes:
+  lancedb:

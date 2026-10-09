@@ -1,0 +1,39 @@
+"""
+domain_lean.py.template — Specialist domain lean API
+=====================================================
+Copy this file to add a new specialist domain corpus.
+
+A specialist domain is a separate LanceDB for a corpus that is too large,
+too distinct, or requires its own retrieval namespace.
+
+Usage:
+  1. cp lean/domain_lean.py.template lean/my_domain_lean.py
+  2. Set DOMAIN_NAME, LANCE_DB_PATH, LEAN_PORT in this file
+  3. Run: python lean/my_domain_lean.py
+  4. Ingest your corpus:
+       python ingest/ingest_bulk_memory.py --lean-url http://127.0.0.1:18001 --ingest
+
+The domain uses the same lean_api.py as the main memory — just a different
+LanceDB path and port. The Godot space can "dial" a domain stargate to route
+search to this corpus for a session.
+"""
+
+import os, sys
+from pathlib import Path
+
+# ── Edit these three values ───────────────────────────────────────────────────
+DOMAIN_NAME = "my_domain"               # human-readable, used in logs
+LANCE_DB_PATH = "./lancedb_my_domain"   # path to this domain's LanceDB
+LEAN_PORT     = "18001"                 # port — pick one not in use
+EMBED_URL     = "http://127.0.0.1:8082" # shared nomic embedder
+# ─────────────────────────────────────────────────────────────────────────────
+
+os.environ.setdefault("LANCE_DB_PATH", LANCE_DB_PATH)
+os.environ.setdefault("LEAN_PORT",     LEAN_PORT)
+os.environ.setdefault("EMBED_URL",     EMBED_URL)
+
+print(f"[{DOMAIN_NAME}] starting domain lean API on :{LEAN_PORT} → {LANCE_DB_PATH}", flush=True)
+
+# Execute lean_api.py in this context — same code, different config
+_lean_path = str(Path(__file__).parent / "lean_api.py")
+exec(open(_lean_path, encoding="utf-8").read())
