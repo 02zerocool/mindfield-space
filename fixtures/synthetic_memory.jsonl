@@ -1,0 +1,3 @@
+{"id":"syn-001","content":"Synthetic row. Keyword overlap is not semantic search.","source":"fixtures","tags":["synthetic"],"schema_version":1}
+{"id":"syn-002","content":"Synthetic row. A gitkeep directory is not a service.","source":"fixtures","tags":["synthetic"],"schema_version":1}
+{"id":"syn-003","content":"Synthetic row. The corpus is not in this repo.","source":"fixtures","tags":["synthetic"],"schema_version":1}

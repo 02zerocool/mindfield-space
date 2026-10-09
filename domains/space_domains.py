@@ -14,7 +14,6 @@ DOMAINS = {
         "lancedb":     "./lancedb_telemetry",
         "description": "Sensor data, anomaly logs, system health, operations reports",
         "color":       [0.2, 0.8, 1.0],   # cyan
-        "pos":         [-8,  2, -5],
         "queries": [
             "sensor anomaly out of limit",
             "thermal subsystem temperature exceedance",
@@ -28,7 +27,6 @@ DOMAINS = {
         "lancedb":     "./lancedb_procedures",
         "description": "Mission procedures, crew checklists, EVA protocols, contingency ops",
         "color":       [0.9, 0.9, 1.0],   # white
-        "pos":         [6,  3, -7],
         "queries": [
             "crew egress procedure emergency",
             "EVA suit donning checklist",
@@ -42,7 +40,6 @@ DOMAINS = {
         "lancedb":     "./lancedb_fmea",
         "description": "Failure modes, fault trees, anomaly investigations, lessons learned",
         "color":       [1.0, 0.3, 0.2],   # red
-        "pos":         [0,  8,  2],
         "queries": [
             "single point failure critical system",
             "fault tree analysis probability",
@@ -56,7 +53,6 @@ DOMAINS = {
         "lancedb":     "./lancedb_propulsion",
         "description": "Propulsion systems, thruster specs, propellant chemistry, burn analysis",
         "color":       [1.0, 0.6, 0.2],   # orange
-        "pos":         [-5, -3,  8],
         "queries": [
             "thruster specific impulse performance",
             "propellant loading oxidizer fuel ratio",
@@ -70,7 +66,6 @@ DOMAINS = {
         "lancedb":     "./lancedb_astrodynamics",
         "description": "Orbital mechanics, trajectory design, navigation, rendezvous",
         "color":       [0.5, 0.3, 1.0],   # deep violet
-        "pos":         [9, -2,  4],
         "queries": [
             "orbital insertion burn periapsis apoapsis",
             "rendezvous proximity operations approach",
@@ -84,7 +79,6 @@ DOMAINS = {
         "lancedb":     "./lancedb_life_support",
         "description": "ECLSS, environmental control, human factors, crew health",
         "color":       [0.3, 0.9, 0.4],   # green
-        "pos":         [-7,  5,  3],
         "queries": [
             "CO2 removal assembly CDRA performance",
             "water recovery system brine processor",
@@ -98,7 +92,6 @@ DOMAINS = {
         "lancedb":     "./lancedb_comms",
         "description": "Communications systems, link budgets, RF systems, deep space network",
         "color":       [0.2, 0.6, 1.0],   # sky blue
-        "pos":         [4, -6, -6],
         "queries": [
             "link budget margin signal noise ratio",
             "deep space network contact schedule",
@@ -112,7 +105,6 @@ DOMAINS = {
         "lancedb":     "./lancedb_science",
         "description": "Mission science objectives, instrument specs, data processing",
         "color":       [0.9, 0.4, 0.8],   # magenta
-        "pos":         [-3, -7, -4],
         "queries": [
             "science objective measurement requirement",
             "instrument calibration dark current bias",
@@ -126,7 +118,6 @@ DOMAINS = {
         "lancedb":     "./lancedb_regulations",
         "description": "NASA-STD, ECSS, safety requirements, certification standards",
         "color":       [0.85, 0.85, 0.6],  # pale yellow
-        "pos":         [7,  4,  5],
         "queries": [
             "NASA-STD safety requirement verification",
             "ECSS qualification test standard",
@@ -140,7 +131,6 @@ DOMAINS = {
         "lancedb":     "./lancedb_planetary",
         "description": "Planetary geology, atmospheres, surface science, astrobiology",
         "color":       [0.7, 0.5, 0.3],   # Mars brown
-        "pos":         [-6, -5, -8],
         "queries": [
             "Mars regolith composition perchlorate",
             "Europa subsurface ocean ice shell thickness",

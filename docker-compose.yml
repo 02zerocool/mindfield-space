@@ -32,6 +32,12 @@ services:
       --embedding
       --ctx-size 2048
       --n-gpu-layers ${EMBED_GPU_LAYERS:-0}
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://127.0.0.1:8082/health"]
+      interval: 15s
+      timeout: 5s
+      retries: 8
+      start_period: 20s
     restart: unless-stopped
 
   # ── Lean memory API ───────────────────────────────────────────────────────────
@@ -49,7 +55,14 @@ services:
       LEAN_PORT:     "${LEAN_PORT:-8018}"
       EMBED_URL:     "http://nomic-embed:${EMBED_PORT:-8082}"
     depends_on:
-      - nomic-embed
+      nomic-embed:
+        condition: service_healthy
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://127.0.0.1:8018/health"]
+      interval: 15s
+      timeout: 5s
+      retries: 8
+      start_period: 20s
     restart: unless-stopped
 
   # ── Voyager web frontend ─────────────────────────────────────────────────────

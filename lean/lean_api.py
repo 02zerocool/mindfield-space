@@ -47,6 +47,7 @@ EMBED_URL   = f"{EMBED_BASE}/v1/embeddings"
 EMBED_MODEL = os.environ.get("EMBED_MODEL", "nomic-embed-text-v1.5")
 DIM         = int(os.environ.get("EMBED_DIM", "768"))
 TABLE_NAME  = "memory"
+SCHEMA_VERSION = 1
 
 # ── Embedding model reference ──────────────────────────────────────────────────
 # Default: nomic-embed-text-v1.5 — 768-dim, runs on CPU via llama-server
@@ -80,6 +81,7 @@ def _get_table():
             pa.field("source",  pa.string()),
             pa.field("tags",    pa.string()),     # JSON-encoded list
             pa.field("ts",      pa.float64()),
+            pa.field("schema_version", pa.int32()),
             pa.field("vector",  pa.list_(pa.float32(), DIM)),
         ])
         _table = _db.create_table(TABLE_NAME, schema=schema)
@@ -183,6 +185,7 @@ def write(req: WriteRequest):
             "source":  req.source or "manual",
             "tags":    json.dumps(req.tags),
             "ts":      time.time(),
+            "schema_version": SCHEMA_VERSION,
             "vector":  vec,
         }])
         return {"ok": True}

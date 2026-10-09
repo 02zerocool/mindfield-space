@@ -5,7 +5,7 @@
 [![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](LICENSE)
 [![Python](https://img.shields.io/badge/Python-3.11%2B-blue)](https://python.org)
 [![LanceDB](https://img.shields.io/badge/Memory-LanceDB-orange)](https://lancedb.com)
-[![Agencies](https://img.shields.io/badge/For-NASA%20·%20ESA%20·%20JAXA%20·%20ISRO%20·%20CSA%20·%20CNSA%20·%20ROSCOSMOS-blue)]()
+[![Fetchers](https://img.shields.io/badge/Fetchers-NASA_NTRS_%C2%B7_arXiv_%C2%B7_ADS-blue)]()
 
 ---
 

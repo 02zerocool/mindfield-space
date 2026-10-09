@@ -39,7 +39,7 @@ def check(url: str, timeout: int = 3) -> tuple[bool, str]:
         return False, str(e)
 
 
-def main():
+def main() -> int:
     print("\nMindfield health check\n")
     print(f"{'Service':<20} {'Status':<10} {'Detail'}")
     print("─" * 70)
@@ -85,7 +85,9 @@ def main():
         print("    OR")
         print("    llama-server --model models/nomic-embed-text-v1.5.Q8_0.gguf --port 8082 --embedding &")
         print("    python lean/lean_api.py\n")
+        return 1
+    return 0
 
 
 if __name__ == "__main__":
-    main()
+    sys.exit(main())

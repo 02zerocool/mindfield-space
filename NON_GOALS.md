@@ -1,0 +1,1 @@
+# NON_GOALS\n\nv0.1 is the memory API and ingest. It does not generate, and it does not include a web UI.\nSee README. This file does not replace docs/ARCHITECTURE.md.\n

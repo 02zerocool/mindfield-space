@@ -6,12 +6,18 @@ installs deps, validates the embedding server.
 
 Usage:
   python setup.py
+  python setup.py --with-model
 """
 
+import argparse
 import subprocess
 import sys
 import os
+import urllib.request
 from pathlib import Path
+
+MODEL_URL = "https://huggingface.co/nomic-ai/nomic-embed-text-v1.5-GGUF/resolve/main/nomic-embed-text-v1.5.Q8_0.gguf"
+MODEL_NAME = "nomic-embed-text-v1.5.Q8_0.gguf"
 
 ROOT = Path(__file__).parent
 
@@ -69,6 +75,24 @@ def install_deps():
     else:
         warn("pypdf not installed — PDF ingest will be skipped")
 
+
+
+def fetch_model():
+    step("Embedding model")
+    dest = ROOT / "models" / MODEL_NAME
+    if dest.exists() and dest.stat().st_size > 1_000_000:
+        ok(f"already present ({dest.stat().st_size} bytes)")
+        return
+    print(f"  downloading {MODEL_NAME}")
+    try:
+        urllib.request.urlretrieve(MODEL_URL, dest)
+    except Exception as e:
+        fail(f"download failed: {e}")
+        sys.exit(1)
+    if dest.stat().st_size < 1_000_000:
+        fail("model file is empty")
+        sys.exit(1)
+    ok(f"saved {dest}")
 
 def copy_env():
     step(".env setup")
@@ -135,6 +159,9 @@ def print_next_steps():
 
 
 if __name__ == "__main__":
+    parser = argparse.ArgumentParser()
+    parser.add_argument("--with-model", action="store_true")
+    args = parser.parse_args()
     print("\nMindfield — Extended Mind Framework")
     print("Setup\n")
     check_python()
@@ -142,4 +169,6 @@ if __name__ == "__main__":
     install_deps()
     copy_env()
     check_docker()
+    if args.with_model:
+        fetch_model()
     print_next_steps()
